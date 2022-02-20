@@ -1,5 +1,8 @@
 import { decodePerms, encodePerms } from "./core";
-import { NO_ACCOUNT_REQUIRED_PERMS_INT } from "./permissions";
+import { Perm, NO_ACCOUNT_REQUIRED_PERMS_INT } from "./permissions";
+
+const getKeyByValue = (obj: { [key: string]: any }, value: any) =>
+  Object.keys(obj).find((key) => obj[key] === value);
 
 function hasPerms(
   userPermsInt: number | number[],
@@ -34,4 +37,18 @@ function removePerms(
   );
   return encodePerms(newUserPerms);
 }
-export { hasPerms, combinePerms, removePerms };
+function requirePerms(
+  userPermsInt: number | number[],
+  permsInt: number | number[],
+  errMsg: string = ""
+) {
+  const sache = Array.isArray(permsInt)
+    ? permsInt.map((i) => getKeyByValue(Perm, i)).join(", ")
+    : getKeyByValue(Perm, permsInt);
+
+  const defaultErrMsg = `Missing Permissions: ${sache}`;
+
+  if (!hasPerms(userPermsInt, permsInt))
+    throw new Error(errMsg || defaultErrMsg);
+}
+export { hasPerms, combinePerms, removePerms, requirePerms };

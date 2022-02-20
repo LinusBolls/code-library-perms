@@ -1,6 +1,6 @@
 {
   "name": "code-library-perms",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "The Permissions-Integer-Based Authorization System of the CODE University of Applied Sciences Library Management System",
   "main": "dist/index",
   "typings": "dist/index",
@@ -9,6 +9,7 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest",
     "build": "tsc && npm run test",
     "prepare": "npm run build",
+    "prepublish": "npm run prepare",
     "start": "node dist",
     "version": "git add -A src",
     "postversion": "git push && git push --tags"
